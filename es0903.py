@@ -23,7 +23,7 @@ fris.write("""<!DOCTYPE html><html lang="it"><head>
         }
         .risultati{
             background-color: beige;
-            font-family: 'Courier New';
+            font-family: 'Verdana';
             font-size: 20px;
             padding: 20px;
         }
