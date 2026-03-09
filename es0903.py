@@ -1,6 +1,5 @@
 # realizza programma python che permette di realizzare in automatico una pagina html confrontando il valore attuale delleuro con dollaro sterlina nuwan yen
-import json
-import os,datetime,requests 
+import datetime,requests, json
 #https://open.er-api.com/v6/latest/EUR
 
 x= requests.get("https://open.er-api.com/v6/latest/EUR")
