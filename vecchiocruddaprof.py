@@ -13,6 +13,21 @@ def stampaMenu():
 #questa funzione si occupa di 
     # - chiede all'utente la sua scelta
     # - controlla che la scelta sia valida
+def salvaFumetti(fumetti):
+    with open("fumetti.txt", "w", encoding="utf-8") as file:
+        for fumetto in fumetti:
+            file.write(f"{fumetto}\n")
+
+def caricaFumetti():
+    fumetti = []
+    try:
+        with open("fumetti.txt", "r", encoding="utf-8") as f:
+            for l in f:
+                fumetti.append(l.strip())
+    except:
+        print("Nessun fumetto salvato in precedenza")
+    return fumetti
+
 def scelta():
     corretto = False
     while not corretto:
@@ -78,6 +93,7 @@ def visualizzaFumetti(f):
             print(f"{i+1} - {f}")
 
 fumetti = []
+fumetti = caricaFumetti()
 
 fine = False
 while not fine:
@@ -92,8 +108,9 @@ while not fine:
     elif s == 4:
         eliminaFumetto(fumetti)
     elif s == 0:
+        salvaFumetti(fumetti)
         print("Arrivedorciiiii")
         fine = True
-    
+
 
 
