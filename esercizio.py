@@ -41,7 +41,8 @@ raccolta = [
         "online": False,
         "num_giocatori": 1,
         "condizione": "Nuovo",
-        "copertina": ""
+        "copertina": "",
+        "quantità": 1
     }
 ]
 def prendi_giochi_da_api(raccolta_presa, cicli): 
@@ -77,13 +78,22 @@ def api_to_dizionario(titolo):
         "data_uscita"  : g.get("released", "N/D"),
         "prezzo"       : random.uniform(10.0, 80.0), 
         "genere"       : g["genres"][0]["name"] if g.get("genres") else "N/D",
-        "online"       : False,
+        "online"       : random.choice([True, False]),
         "num_giocatori": 1,
         "condizione"   : random.choice(["Nuovo", "Usato","N/D"]),
-        "copertina"    : g.get("background_image", "")
+        "copertina"    : g.get("background_image", ""),
+        "quantità"      : random.randint(1, 5)
     }
 
-
+def aggiungi_gioco(raccolta_presa):
+    input_titolo = input("Titolo del gioco: ").strip()
+    api_to_dizionario(input_titolo)
+    gioco = api_to_dizionario(input_titolo)
+    if gioco:
+        raccolta_presa.append(gioco)
+        print("Gioco aggiunto con successo!")
+    else:
+        print("Errore nell'aggiunta del gioco.")
 
 def menu_scelta():
     print("="*40)
@@ -91,9 +101,8 @@ def menu_scelta():
     print("="*40)
     print("1. carica tutti i giochi disponibili sul sito")
     print("2. Visualizza collezione")
-    print("3. Aggiungi gioco (manuale)")
+    print("3. Aggiungi gioco con server api")
     print("4. Modifica gioco")
-    print("5. Elimina gioco")
     print("0. Esci")
     scelta = input("Scegli un'opzione: ")
     return scelta
@@ -115,6 +124,7 @@ def mostra_gioco(gioco):
     print(f"  Online       : {'Sì' if gioco.get('online') else 'No'}")
     print(f"  Giocatori    : {gioco.get('num_giocatori','N/D')}")
     print(f"  Condizione   : {gioco.get('condizione','N/D')}")
+    print(f"  Quantità     : {gioco.get('quantità',1)}")
     copertina = gioco.get("copertina","")
     if copertina:
         print(f"   Copertina : {copertina}")
@@ -129,8 +139,19 @@ def visualizza_tutti(raccolta_presa):
     for gioco in raccolta_presa:
         mostra_gioco(gioco)
 
-prendi_giochi_da_api(raccolta, 10)
-visualizza_tutti(raccolta)
+def modifica_gioco(raccolta_presa):
+    print("menu modifica gioco")
+    input_titolo = input("Titolo del gioco da modificare: ").strip()
+    if input_titolo in raccolta_presa:
+        gioco = api_to_dizionario(input_titolo)
+        if gioco:
+            raccolta_presa.append(gioco)
+            print("Gioco modificato con successo!")
+        else:
+            print("Errore nella modifica del gioco.")
+
+       
+  
 
 controllo = True
 while controllo:
@@ -141,9 +162,10 @@ while controllo:
     elif scelta == "2":
         visualizza_tutti(raccolta)
     elif scelta == "3":
-        print("Funzione di aggiunta gioco (manuale) non ancora implementata.")
+        aggiungi_gioco(raccolta)   
     elif scelta == "4":
-        print("Funzione di modifica gioco non ancora implementata.")
+        visualizza_tutti(raccolta)
+        modifica_gioco(raccolta)
     elif scelta == "5":
         print("Funzione di eliminazione gioco non ancora implementata.")
     elif scelta == "0":
